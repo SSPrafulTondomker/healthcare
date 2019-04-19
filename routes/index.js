@@ -23,26 +23,55 @@ var loggedin = function (req, res, next) {
 }
 
 
-
-
 //Index page route
 router.get('/index', loggedin, (req,res) => {
-    console.log("user is logged in!!!");
-    var output = [{answer: "Your answer will appear here"}];
-    res.render('index', {output: output});
+
+    userList.find({type: "patient"}, function(err, listOfPatients){
+        profileList.find({username: req.user.username}, function(err, userProfile){
+
+            res.render('index', {type: req.user.type, username: req.user.username, listOfPatients: listOfPatients, patientProfile:[], userProfile: userProfile});
+
+        });
+    });
+
 });
 
+//Index page route
+router.get('/sendFiles', loggedin, (req,res) => {
+
+    userList.find({type: "patient"}, function(err, listOfPatients){
+        profileList.find({username: req.user.username}, function(err, userProfile){
+
+            res.render('sendFiles', {type: req.user.type, username: req.user.username, listOfPatients: listOfPatients, patientProfile:[], userProfile: userProfile});
+
+        });
+    });
+
+});
+
+//Index page route
+router.get('/viewFiles', loggedin, (req,res) => {
+
+    userList.find({type: "patient"}, function(err, listOfPatients){
+        profileList.find({username: req.user.username}, function(err, userProfile){
+
+            res.render('viewFiles', {type: req.user.type, username: req.user.username, listOfPatients: listOfPatients, patientProfile:[], userProfile: userProfile});
+
+        });
+    });
+
+});
 
 //Query page route
 router.get('/query', loggedin, (req,res) => {
-    console.log("user is logged in!!!");
+
     var output = [{answer: "Your answer will appear here"}];
-    res.render('query', {output: output});
+    res.render('query', {output: output, type : req.user.type});
+
 });
 
 //Index page route
 router.get('/', loggedin, (req,res) => {
-    console.log("user is logged in!!!");
     res.redirect('/'+req.user.username);
 });
 
@@ -69,146 +98,49 @@ router.get('/verify', function (req, res) {
 });
 
 //forgot-paword route
-router.get('/forgot-password', function (req, res) {
-    res.render('forgot-password');
+router.get('/forgot', function (req, res) {
+    res.render('forgot');
 });
+
 
 
 //success route
 router.get('/success', loggedin, (req,res) => {
-    console.log("user is logged in!!!");
-    profileList.find({userName: req.user.username},function(err, type){
-
-        if (req.user.type == 'admin') {
-            complaintList.find({}, function(err, list){
-                if (err){
-                        console.log("error in complaint list!!!");
-                }else{
-                    var solved, unsolved;
-                    solved = 0;
-                    unsolved = 0;
-                    list.forEach(function(l){
-                        if (l.solved){
-                            solved += 1;
-                        } else {
-                            unsolved += 1;
-                        }
-                    });
-                    
-                    backupList.find({}, function(err, discard){
-                        res.render('home', {success: true, type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                    });
-                    
-                }
-            });
-        } else {
-        complaintList.find({userName: req.user.username}, function(err, list){
-            if (err){
-                    console.log("error in complaint list!!!");
-            }else{
-                var solved, unsolved;
-                solved = 0;
-                unsolved = 0;
-                list.forEach(function(l){
-                    if (l.solved){
-                        solved += 1;
-                    } else {
-                        unsolved += 1;
-                    }
-                });
-                backupList.find({}, function(err, discard){
-                    // console.log(discard);
-                    res.render('home', {success: true, type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                });
-                
-            }
-        });
-        }  
-    });
+    var username = req.user.username;
+    res.redirect('/'+username);
 });
 
 
 //user index route
 router.get('/:username', loggedin, (req,res) => {
-    console.log("user is logged in!!!");
-    profileList.find({userName: req.user.username},function(err, type){
-
-        if (req.user.type == 'admin') {
-            complaintList.find({}, function(err, list){
-                if (err){
-                        console.log("error in complaint list!!!");
-                }else{
-                    var solved, unsolved;
-                    solved = 0;
-                    unsolved = 0;
-                    list.forEach(function(l){
-                        if (l.solved){
-                            solved += 1;
-                        } else {
-                            unsolved += 1;
-                        }
-                    });
-                    
-                    backupList.find({}, function(err, discard){
-                        res.render('home', {success: false, type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                    });
-                    
-                }
-            });
-        } else {
-        complaintList.find({userName: req.user.username}, function(err, list){
-            if (err){
-                    console.log("error in complaint list!!!");
-            }else{
-                var solved, unsolved;
-                solved = 0;
-                unsolved = 0;
-                list.forEach(function(l){
-                    if (l.solved){
-                        solved += 1;
-                    } else {
-                        unsolved += 1;
-                    }
-                });
-                backupList.find({}, function(err, discard){
-                    // console.log(discard);
-                    res.render('home', {success: false, type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                });
-                
-            }
-        });
-        }  
-    });
+    res.render('home');
 });
 
 
-//verification
+
+//token verification
 router.get('/:username/:token', function(req, res, next){
    
-    userList.find({$and: [{username: req.params.username}, {token: req.params.token}]}, function(err, listOfItems){
+    userList.find({$and: [{username: req.params.username}, {token: req.params.token}]}, function(err, userEntity){
         if (err){
-                console.log("error in getting list of items!! in /:username");
+                console.log("error in getting userEntity in /:username/:token");
         }else{
-            if (listOfItems.length != 0){
+            if (userEntity.length != 0){
                 userList.findOneAndUpdate({username: req.params.username},
                     {
                         activate : true, 
                     }
                     , {upsert:true}, function(err, newCreate){
                     if(err){
-                        console.log("error in editing profile");
+                        console.log("error in Updating active==> true");
                     }
                 });
-            res.redirect('/success');
+            res.redirect('/:username');
+            }
         }
-            console.log(listOfItems);
- 
-            next();
-            console.log("successfully executed list command!! in /:username/success");
-        }
-    });
-    
+    }); 
 });
+
 
 
 //page not found route

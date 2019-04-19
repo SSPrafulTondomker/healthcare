@@ -23,20 +23,98 @@ var loggedin = function (req, res, next) {
 }
 
 
-
-
-
 //profile route
 router.get ('/profile', loggedin, (req, res) => {
-    console.log("executed profile!!!");
-    profileList.find({userName: req.user.username}, function(err, listOfProfiles){
+
+    profileList.find({username: req.user.username}, function(err, userProfile){
         if (err){
-                console.log("error in getting list of items!! in /:username");
+                res.status(500).send("error in getting profile");
         }else{
-            console.log(listOfProfiles);
-            res.render('profile', {listOfProfiles: listOfProfiles});
+            res.render('profile', {userProfile: userProfile, type : req.user.type, username: req.user.username});
         }
     });
+});
+
+
+
+router.post( '/editprofile',(req, res) => {
+ 
+    var username = req.user.username, 
+    name = req.body.name,
+    address = req.body.address, 
+    gender = req.body.gender,
+    interests = req.body.interests,
+    consent = [],
+    blood = req.body.blood,
+    disease = req.body.disease,
+    medication = req.body.medication;
+
+    if (!Array.isArray(interests))
+        interests = [interests];
+
+    if (disease == 'option1')
+        disease = true;
+    else
+        disease = false;
+    if (medication == 'option1')
+        medication = true;
+    else 
+        medication = false;
+
+
+  var profile = new profileList({
+      username: username, 
+      firstname : name,
+      address : address, 
+      gender : gender,
+      interest : interests,
+      consent : [],
+      records : [],
+      blood : blood,
+      disease : disease,
+      medication : medication
+      });
+
+
+       
+      profileList.find({username: req.user.username}, function(err, listOfProfile){
+          if (err){
+                  console.log("error in profile list!!!");
+          }else{
+              if(listOfProfile.length != 0){
+                  profileList.findOneAndUpdate({username: req.user.username},
+                      {
+                        username: username, 
+                        firstname : name,
+                        address : address, 
+                        gender : gender,
+                        interest : interests,
+                        consent : listOfProfile[0].consent,
+                        records : listOfProfile[0].records,
+                        blood : blood,
+                        disease : disease,
+                        medication : medication
+                      }
+                      , {upsert: true}, function(err, newCreate){
+                      if(err){
+                          console.log(err);
+                      }
+                      else{
+                          res.redirect('/profile');
+                      }
+                  });
+              }else {
+                  profile.save(function(err, newCreate){
+                      if(err){
+                          console.log("error in editing profile");
+                      }
+                      else{
+                          res.redirect('/profile');
+                      }
+                  });            
+              }
+          }
+      });
 });
 
 module.exports = router;

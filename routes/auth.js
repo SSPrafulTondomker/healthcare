@@ -4,33 +4,43 @@ var User = require('../db/User');
 var randomstring = require('randomstring');
 var bcrypt = require('bcrypt-nodejs');
 var profileList = require('../db/profile');
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS
+    }
+});                         
 require('dotenv').config();
-/* GET home page. */
 
 
 module.exports = function (passport) {
 
+
+    //sinup route
     router.post('/signup', function (req, res) {
-        
+
+
         var body = req.body,
             username = body.username,
             mail = body.email,
-            type = "user",
+            type = body.type,
             password = body.password,
             firstname = "";
         
-            // Generate secret token
         var secretToken = randomstring.generate();
-        User.findOne({
-            username: username
-        }, function (err, doc) {
+
+
+        User.findOne({username: username}, function (err, doc) {
             if (err) {
-                res.status(500).send('error occured')
+                res.status(500).send('error  occured while signup');
             } else {
                 if (doc) {
-                    res.render('register', {error: true});
+                    res.render('register');
                 } else {
-                    var record = new User()
+
+                    var record = new User();
                     record.username = username;
 		            record.mail = mail;
                     record.password = record.hashPassword(password);
@@ -39,37 +49,31 @@ module.exports = function (passport) {
                     record.type = type;
 
                     var profile = new profileList({
-                        userName: username, 
-                        firstname : firstname,
-                        lastname : "", 
-                        dob : "", 
-                        image : "default",
-                        type : type,
+                        username: username, 
+                        firstname : "",
+                        address : "", 
                         gender : "",
-                        roll : ""
+                        interest : [],
+                        consent : [],
+                        records : [],
+                        blood : "",
+                        disease : false,
+                        medication : false
                         });
+
                         profile.save(function(err, newCreate){
                             if(err){
-                                console.log("error in editing profile");
+                                console.log("error in saving profile");
                             }
                             else{
-                                console.log("Editing  Successful!!!");
+                                console.log("Saving profile Successful!!!");
                             }
                         });  
                     
                         record.save(function (err, user) {
                         if (err) {
-                            res.status(500).send('db error')
+                            res.status(500).send('error in saving profile');
                         } else {
-                            var nodemailer = require('nodemailer');
-
-                            var transporter = nodemailer.createTransport({
-                                service: 'gmail',
-                                auth: {
-                                    user: process.env.EMAIL,
-                                    pass: process.env.EMAIL_PASS
-                                }
-                            });
                             const html = `Hi there,
                                         <br/>
                                         Thank you for registering!
@@ -78,38 +82,43 @@ module.exports = function (passport) {
                                         
                                         <a href="${process.env.HOST_LINK}/${username}/${secretToken}">activate</a>
                                         <br/><br/>
+                                        ${process.env.HOST_LINK}/${username}/${secretToken}
+                                        <br/><br/>
                                         Have a pleasant day.`;
+
                             const mailOptions = {
-                                from: process.env.EMAIL, // sender address
+                                from: process.env.EMAIL, 
                                 to: mail,
-                                subject: 'Activation link', // Subject line
-                                html: html// plain text body
+                                subject: 'Activation link', 
+                                html: html
                             };
 
                             transporter.sendMail(mailOptions, function (err, info) {
                                 if(err)
-                                    console.log(err)
+                                    console.log(err);
                                 else
                                     console.log(info);
                             });
                             res.redirect('/verify');
                         }
-                    })
+                    });
                 }
             }
-        })
+        });
     });
+
 
     //forgot
     router.post('/forgot', function (req, res) {
+
         var body = req.body,
             username = body.username,
             password = randomstring.generate(7);
-        User.findOne({
-            username: username
-        }, function (err, doc) {
+        
+        User.findOne({username: username}, function (err, doc) {
+
             if (err) {
-                res.status(500).send('error occured')
+                res.status(500).send('error occured in /forgot');
             } else {
                 if(doc) {
                     User.findOneAndUpdate({username: username},
@@ -126,21 +135,12 @@ module.exports = function (passport) {
                             console.log("error in forgot password!");
                         }
                         else{
-                            console.log("Editing  Successful!!!");
-                            var nodemailer = require('nodemailer');
-
-                            var transporter = nodemailer.createTransport({
-                                service: 'gmail',
-                                auth: {
-                                    user: process.env.EMAIL,
-                                    pass: process.env.EMAIL_PASS
-                                }
-                            });
                             const html = `Hi there,
                                         <br/>
                                         Thank you for joining us!
                                         <br/><br/>
                                         Please use this password for log in!
+                                        <br/><br/>
                                         Username:
                                         ${username}
                                         <br/><br/>
@@ -148,16 +148,17 @@ module.exports = function (passport) {
                                         ${password}
                                         <br/><br/>
                                         Have a pleasant day.`;
+                            
                             const mailOptions = {
-                                from: process.env.EMAIL, // sender address
+                                from: process.env.EMAIL, 
                                 to: doc.mail,
-                                subject: 'New Generated Password', // Subject line
-                                html: html// plain text body
+                                subject: 'New Generated Password', 
+                                html: html
                             };
 
                             transporter.sendMail(mailOptions, function (err, info) {
                                 if(err)
-                                    console.log(err)
+                                    console.log(err);
                                 else
                                     console.log(info);
                             });
@@ -171,18 +172,20 @@ module.exports = function (passport) {
 
 
     //verify again
-    //forgot
     router.post('/verifyAgain', function (req, res) {
+
         var body = req.body,
             username = body.username,
             secretToken = randomstring.generate();
-        User.findOne({
-            username: username
-        }, function (err, doc) {
+        
+        User.findOne({username: username}, function (err, doc) {
+
             if (err) {
-                res.status(500).send('error occured')
+                res.status(500).send('error occured in /verify');
             } else {
+
                 if(doc) {
+
                     User.findOneAndUpdate({username: username},
                         {
                             username : username,
@@ -194,20 +197,9 @@ module.exports = function (passport) {
                         }
                         , {upsert:true}, function(err, newCreate){
                         if(err){
-                            console.log("error in forgot password!");
+                            console.log("error in verify!");
                         }
                         else{
-                            console.log(username);
-                            console.log("Editing  Successful!!!");
-                            var nodemailer = require('nodemailer');
-
-                            var transporter = nodemailer.createTransport({
-                                service: 'gmail',
-                                auth: {
-                                    user: process.env.EMAIL,
-                                    pass: process.env.EMAIL_PASS
-                                }
-                            });
                             const html = `Hi there,
                                             <br/>
                                             Thank you for registering!
@@ -216,16 +208,17 @@ module.exports = function (passport) {
                                             <a href="${process.env.HOST_LINK}/${doc.username}/${secretToken}">activate</a>
                                             <br/><br/>
                                             Have a pleasant day.`;
+                            
                             const mailOptions = {
-                                from: process.env.EMAIL, // sender address
+                                from: process.env.EMAIL, 
                                 to: doc.mail,
-                                subject: 'Activation link', // Subject line
-                                html: html// plain text body
+                                subject: 'Activation link', 
+                                html: html
                             };
 
                             transporter.sendMail(mailOptions, function (err, info) {
                                 if(err)
-                                    console.log(err)
+                                    console.log(err);
                                 else
                                     console.log(info);
                             });
@@ -239,10 +232,12 @@ module.exports = function (passport) {
 
 
     router.post('/signin', passport.authenticate('local', {
+       
         failureRedirect: '/login',
         successRedirect: '/success',
+    
     }), function (req, res) {
         res.send("done");
-    })
+    });
     return router;
 };

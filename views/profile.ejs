@@ -36,40 +36,55 @@
     <!-- Left Panel -->
 
     <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
+            <nav class="navbar navbar-expand-sm navbar-default">
 
-            <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="/index"><img src="img/team/dummy.jpg" style="width: 50%; height: 50%" class="rounded-circle img-rounded"></a>
-                <!-- <a class="navbar-brand hidden" href="/index"><img src="images/logo.png" alt="Logo"></a> -->
-            </div>
-
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="/index"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
-                    </li>
-
-                    <li class="active">
-                        <a href="/profile"> <i class="menu-icon fa fa-gears"></i>Profile </a>
-                    </li>
-                    <li class="active">
-                        <a href="/query"> <i class="menu-icon fa fa-book"></i>Query </a>
-                    </li>
-
-                    <li class="active">
-                        <a href="/consent"> <i class="menu-icon fa fa-book"></i>Consent </a>
-                    </li>
-
-                    <li class="active">
-                        <a href="/timeline"> <i class="menu-icon fa fa-inbox"></i>Timeline </a>
-                    </li>
-                    
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
+                    <div class="navbar-header">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/index"><img src="img/team/dummy.jpg" style="width: 50%; height: 50%" class="rounded-circle img-rounded"></a>
+                        <!-- <a class="navbar-brand hidden" href="/index"><img src="images/logo.png" alt="Logo"></a> -->
+                    </div>
+        
+                    <div id="main-menu" class="main-menu collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="/index"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                            </li>
+        
+                            <li class="active">
+                                <a href="/profile"> <i class="menu-icon fa fa-gears"></i>Profile </a>
+                            </li>
+        
+                            <% if(type == "patient"){ %>
+                            
+                                <li class="active">
+                                    <a href="/query"> <i class="menu-icon fa  fa-question"></i>Query </a>
+                                </li>
+        
+                                <li class="active">
+                                    <a href="/consent"> <i class="menu-icon fa fa-book"></i>Consent </a>
+                                </li>
+        
+                                <li class="active">
+                                    <a href="/timeline"> <i class="menu-icon fa fa-inbox"></i>Timeline </a>
+                                </li>
+        
+                                <li class="active">
+                                        <a href="/records"> <i class="menu-icon fa fa-file"></i>Record </a>
+                                </li>
+                                <% } else {%>
+                                    <li class="active">
+                                        <a href="/sendFiles"> <i class="menu-icon fa fa-inbox"></i>Send Files </a>
+                                    </li>
+            
+                                    <li class="active">
+                                            <a href="/viewFiles"> <i class="menu-icon fa fa-file"></i>View Files </a>
+                                    </li>
+                                <%}%>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
     </aside><!-- /#left-panel -->
 
     <!-- Left Panel -->
@@ -153,8 +168,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Profile</a></li>
+                            <li><a href="/index">Dashboard</a></li>
                             <li class="active">Profile</li>
                         </ol>
                     </div>
@@ -165,207 +179,66 @@
         <div class="content mt-3">
             <div class="animated fadeIn">
                 <div class="row">
-
-                        <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <strong class="card-title mb-3">Profile Card</strong>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mx-auto d-block">
-                                            <img class="rounded-circle mx-auto d-block" src="img/team/dummy.jpg" alt="Card image cap">
-                                            <h5 class="text-sm-center mt-2 mb-1">Username</h5>
-                                            <div class="location text-sm-center"><i class="fa fa-map-marker"></i> Allahabad, India</div>
-                                        </div>
-                                        <hr>
-                                        <div class="col align-self-center">
-                                                <div class="card">
-                                                        <div class="card-header">
-                                                            <strong class="card-title">Profile</strong>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table class="table ">
-                                                                
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th scope="row">Name</th>
-                                                                        <td>Mark</td>
-                                                                        
-                                                                    <tr>
-                                                                        <th scope="row">Age</th>
-                                                                        <td>18yrs</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th scope="row">Gender</th>
-                                                                        <td>M</td> 
-                                                                    </tr>
-                                                                    <tr>
-                                                                            <th scope="row">Blood group</th>
-                                                                            <td>A+</td> 
-                                                                        </tr>
-                                                                        <tr>
-                                                                                <th scope="row">Weight</th>
-                                                                                <td>50kg</td> 
-                                                                            </tr>
-                                                                            <tr>
-                                                                                    <th scope="row">height</th>
-                                                                                    <td>5.8</td> 
-                                                                                </tr>
-                                                                                <tr>
-                                                                                        <th scope="row">Active Medication</th>
-                                                                                        <td>True</td> 
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                            <th scope="row">Active disease</th>
-                                                                                            <td>False</td> 
-                                                                                        </tr>
-                                                                    <tr>
-                                                                            <th scope="row">Address</th>
-                                                                            <td>Allahabad, India</td> 
-                                                                        </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                        </div>
-                                        <div class="card-text text-sm-center">
-                                            <a href="#"><i class="fa fa-facebook pr-1"></i></a>
-                                            <a href="#"><i class="fa fa-twitter pr-1"></i></a>
-                                            <a href="#"><i class="fa fa-linkedin pr-1"></i></a>
-                                            <a href="#"><i class="fa fa-pinterest pr-1"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="mb-3">BMI</h4>
-                                            <canvas id="sales-chart"></canvas>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="mb-3">Activity</h4>
-                                                <canvas id="radarChart"></canvas>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="mb-3">History</h4>
-                                                    <canvas id="barChart"></canvas>
-                                                </div>
-                                            </div>
-                                </div>
-                                
-
                     <div class="container col-lg-8">
                         <div class="card">
                             <div class="card-header">
                                 <strong>Edit Profile</strong> 
                             </div>
                             <div class="card-body card-block">
-                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <form action="/editprofile" method="POST"  class="form-horizontal">
                                     <div class="row form-group">
                                         <div class="col col-md-3"><label class=" form-control-label">Static</label></div>
                                         <div class="col-12 col-md-9">
-                                            <p class="form-control-static">Username</p>
+                                            <p class="form-control-static"><%=username%></p>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col col-md-3"><label for="text-input" class=" form-control-label">Name</label></div>
-                                        <div class="col-12 col-md-9"><input type="text" id="text-input" name="text-input" placeholder="Name" class="form-control"><small class="form-text text-muted">Please enter your name</small></div>
+                                        <div class="col-12 col-md-9"><input type="text" id="text-input" name="name" placeholder="Name" class="form-control"><small class="form-text text-muted">Please enter your name</small></div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3"><label for="email-input" class=" form-control-label">Email Input</label></div>
-                                        <div class="col-12 col-md-9"><input type="email" id="email-input" name="email-input" placeholder="Enter Email" class="form-control"><small class="help-block form-text">Please enter your email</small></div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3"><label for="password-input" class=" form-control-label">Password</label></div>
-                                        <div class="col-12 col-md-9"><input type="password" id="password-input" name="password-input" placeholder="Password" class="form-control"><small class="help-block form-text">Please enter a complex password</small></div>
-                                    </div>
-                                    <!-- <div class="row form-group">
-                                        <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Disabled Input</label></div>
-                                        <div class="col-12 col-md-9"><input type="text" id="disabled-input" name="disabled-input" placeholder="Disabled" disabled="" class="form-control"></div>
-                                    </div> -->
+                                
                                     <div class="row form-group">
                                         <div class="col col-md-3"><label for="textarea-input" class=" form-control-label">Address</label></div>
-                                        <div class="col-12 col-md-9"><textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Address..." class="form-control"></textarea></div>
+                                        <div class="col-12 col-md-9"><textarea name="address" id="textarea-input" rows="9" placeholder="Address..." class="form-control"></textarea></div>
                                     </div>
                                         <div class="row form-group">
                                             <div class="col col-md-3"><label for="select" class=" form-control-label">Gender</label></div>
                                             <div class="col-12 col-md-9">
-                                                <select name="select" id="select" class="form-control">
+                                                <select name="gender" id="select" class="form-control">
                                                     <option value="0">Please select</option>
-                                                    <option value="1">Male</option>
-                                                    <option value="2">Female</option>
-                                                    <option value="3">Other</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- <div class="row form-group">
-                                            <div class="col col-md-3"><label for="selectLg" class=" form-control-label">Select Large</label></div>
-                                            <div class="col-12 col-md-9">
-                                                <select name="selectLg" id="selectLg" class="form-control-lg form-control">
-                                                    <option value="0">Please select</option>
-                                                    <option value="1">Option #1</option>
-                                                    <option value="2">Option #2</option>
-                                                    <option value="3">Option #3</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
-                                        <!-- <div class="row form-group">
-                                            <div class="col col-md-3"><label for="selectSm" class=" form-control-label">Select Small</label></div>
-                                            <div class="col-12 col-md-9">
-                                                <select name="selectSm" id="SelectLm" class="form-control-sm form-control">
-                                                    <option value="0">Please select</option>
-                                                    <option value="1">Option #1</option>
-                                                    <option value="2">Option #2</option>
-                                                    <option value="3">Option #3</option>
-                                                    <option value="4">Option #4</option>
-                                                    <option value="5">Option #5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="disabledSelect" class=" form-control-label">Disabled Select</label></div>
-                                            <div class="col-12 col-md-9">
-                                                <select name="disabledSelect" id="disabledSelect" disabled="" class="form-control">
-                                                    <option value="0">Please select</option>
-                                                    <option value="1">Option #1</option>
-                                                    <option value="2">Option #2</option>
-                                                    <option value="3">Option #3</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
+                                    
                                         <div class="row form-group">
                                             <div class="col col-md-3"><label for="multiple-select" class=" form-control-label">Interest </label></div>
                                             <div class="col col-md-9">
-                                                <select name="multiple-select" id="multiple-select" multiple="" class="form-control">
-                                                    <option value="1">Cycling</option>
-                                                    <option value="2">Jogging</option>
-                                                    <option value="3">Yoga</option>
-                                                    <option value="4">Heavy Exercise</option>
-                                                    <option value="5">Moderate Exercise</option>
-                                                    <option value="6">Light Exercise</option>
+                                                <select name="interests" id="multiple-select" multiple="" class="form-control">
+                                                    <option value="Cycling">Cycling</option>
+                                                    <option value="Jogging">Jogging</option>
+                                                    <option value="Yoga">Yoga</option>
+                                                    <option value="Heavy Exercise">Heavy Exercise</option>
+                                                    <option value="Moderate Exercise">Moderate Exercise</option>
+                                                    <option value="Light Exercise">Light Exercise</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                                <div class="col col-md-3"><label for="select" class=" form-control-label">Gender</label></div>
+                                                <div class="col col-md-3"><label for="select" class=" form-control-label">Blood Group</label></div>
                                                 <div class="col-12 col-md-9">
-                                                    <select name="select" id="select" class="form-control">
+                                                    <select name="blood" id="select" class="form-control">
                                                         <option value="0">Please select</option>
-                                                        <option value="1">A+</option>
-                                                        <option value="2">A-</option>
-                                                        <option value="3">B+</option>
-                                                        <option value="1">B-</option>
-                                                        <option value="2">AB+</option>
-                                                        <option value="3">AB-</option>
-                                                        <option value="1">O+</option>
-                                                        <option value="2">O-</option>
-                                                        <!-- <option value="3">Other</option> -->
+                                                        <option value="A+">A+</option>
+                                                        <option value="A-">A-</option>
+                                                        <option value="B+">B+</option>
+                                                        <option value="B-">B-</option>
+                                                        <option value="AB+">AB+</option>
+                                                        <option value="AB-">AB-</option>
+                                                        <option value="O+">O+</option>
+                                                        <option value="O-">O-</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -374,10 +247,10 @@
                                             <div class="col col-md-9">
                                                 <div class="form-check-inline form-check">
                                                     <label for="inline-radio1" class="form-check-label ">
-                                                        <input type="radio" id="inline-radio1" name="inline-radios" value="option1" class="form-check-input">True
+                                                        <input type="radio" id="inline-radio1" name="disease" value="option1" class="form-check-input">True
                                                     </label>
                                                     <label for="inline-radio2" class="form-check-label ">
-                                                        <input type="radio" id="inline-radio2" name="inline-radios" value="option2" class="form-check-input">False
+                                                        <input type="radio" id="inline-radio1" name="disease" value="option2" class="form-check-input">False
                                                     </label>
                                                 </div>
                                             </div>
@@ -387,33 +260,24 @@
                                                 <div class="col col-md-9">
                                                     <div class="form-check-inline form-check">
                                                         <label for="inline-radio1" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio1" name="inline-radios" value="option1" class="form-check-input">True
+                                                            <input type="radio" id="inline-radio2" name="medication" value="option1" class="form-check-input">True
                                                         </label>
                                                         <label for="inline-radio2" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio2" name="inline-radios" value="option2" class="form-check-input">False
+                                                            <input type="radio" id="inline-radio2" name="medication" value="option2" class="form-check-input">False
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">File input</label></div>
-                                            <div class="col-12 col-md-9"><input type="file" id="file-input" name="file-input" class="form-control-file"></div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-multiple-input" class=" form-control-label">Multiple File input</label></div>
-                                            <div class="col-12 col-md-9"><input type="file" id="file-multiple-input" name="file-multiple-input" multiple="" class="form-control-file"></div>
-                                        </div>
-                                </form>
+                                        
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary btn-sm">
+                                <button type="submit" class="btn btn-success btn-sm">
                                     <i class="fa fa-dot-circle-o"></i> Submit
                                 </button>
-                                <button type="reset" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-ban"></i> Reset
-                                </button>
+                                
                             </div>
+                        </form>
                         </div>
                     </div>
 

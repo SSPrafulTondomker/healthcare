@@ -2,15 +2,16 @@ var mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
 
 var profileSchema = new mongoose.Schema({
-    userName: String, 
-    firstname: String,
-    lastname : String, 
-    image : String,
-    dob : String,
-    type : String,
-    course : String, 
+    username: String, 
+    firstname : String,
+    address : String, 
     gender : String,
-    roll : String 
+    interest : {type : Array , "default" : []},
+    consent : {type : Array , "default" : []},
+    records : {type : Array , "default" : []},
+    blood : String,
+    disease : Boolean,
+    medication : Boolean 
 });
 
 profileSchema.plugin(timestamps);

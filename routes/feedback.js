@@ -13,6 +13,14 @@ var userList = require('../db/User'),
     xlsxList = require('../db/xlsx'),
     profileList = require('../db/profile');
 
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS
+    }
+});             
     
 var loggedin = function (req, res, next) {
   if (req.isAuthenticated()) {
@@ -22,64 +30,44 @@ var loggedin = function (req, res, next) {
   }
 }
 
-//feedback
-router.get ('/feedback', loggedin, (req, res) => {
-    console.log("executed complaint!!!");
-    res.redirect('/'+req.user.username+'/feedback');
-});
 
+router.post ('/feedback', (req, res) => {
 
-//:username/compalint route
-router.get ('/:username/feedback', loggedin, (req, res) => {
-    console.log("executed complaint!!!");
-    profileList.find({userName: req.user.username},function(err, type){
+    var body = req.body,
+            name = body.name,
+            email = body.email,
+            subject = body.subject,
+            message = body.message;
+            
+    const html = `Hi there,
+            <br/>
+            There is a feedback for you!
+            <br/><br/>
+            From:
+            ${name}
+            <br/><br/>
+            Email:
+            ${email}
+            <br/><br/>
+            Message:
+            ${message}
+            <br/><br/>
+            Have a pleasant day.`;
 
-        if (req.user.type == 'admin') {
-            complaintList.find({}, function(err, list){
-                if (err){
-                        console.log("error in complaint list!!!");
-                }else{
-                    var solved, unsolved;
-                    solved = 0;
-                    unsolved = 0;
-                    list.forEach(function(l){
-                        if (l.solved){
-                            solved += 1;
-                        } else {
-                            unsolved += 1;
-                        }
-                    });
-                    console.log(list);
-                    backupList.find({}, function(err, discard){
-                        res.render('feedback', {type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                    });
-                    
-                }
-            });
-        } else {
-        complaintList.find({userName: req.user.username}, function(err, list){
-            if (err){
-                    console.log("error in complaint list!!!");
-            }else{
-                var solved, unsolved;
-                solved = 0;
-                unsolved = 0;
-                list.forEach(function(l){
-                    if (l.solved){
-                        solved += 1;
-                    } else {
-                        unsolved += 1;
-                    }
-                });
-                backupList.find({userName: req.user.username}, function(err, discard){
-                    res.render('feedback', {type: type, list: list, solved: solved, unsolved: unsolved, total: list.length, discarded: discard.length});
-                });
-                
-            }
-        });
-        }
-        
+    const mailOptions = {
+        from: process.env.EMAIL, 
+        to: process.env.EMAIL,
+        subject: subject, 
+        html: html
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+            console.log(err);
+        else
+            console.log(info);
     });
+    res.redirect('/');
 });
 //end
 

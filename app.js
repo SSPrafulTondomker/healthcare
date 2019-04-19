@@ -27,6 +27,8 @@ var index = require('./routes/index'),
   privilege = require('./routes/privilege'),
   edit = require('./routes/editprofile'),
   posts = require('./routes/posts'),
+  consent = require('./routes/consent'),
+  records = require('./routes/records'),
   userslist = require('./routes/userslist');
 
 var app = express();
@@ -53,6 +55,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use('/', records);
+app.use('/', consent);
 app.use('/', posts);
 app.use('/', privilege);
 app.use('/', edit);

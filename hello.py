@@ -8,6 +8,11 @@ display.start()
 
 inputString = sys.argv[1]
 
+#write file
+f = open('input.txt', 'w')
+f.write(inputString)
+f.close()
+
 driver = webdriver.Chrome("chromedriver")
 driver.get('http://text-machine.cs.uml.edu/cliner/demo/cgi-bin/cliner_demo.cgi/')
 
@@ -15,6 +20,9 @@ driver.get('http://text-machine.cs.uml.edu/cliner/demo/cgi-bin/cliner_demo.cgi/'
 
 text_box = driver.find_element_by_name('user_input')
 text_box.send_keys(inputString)
+
+
+
 
 
 btn = driver.find_element_by_name('my_form')
